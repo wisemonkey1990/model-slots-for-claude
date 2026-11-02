@@ -1,6 +1,6 @@
 # Model Slots for Claude
 
-[中文说明](README.zh-CN.md)
+[English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [Русский](README.ru.md)
 
 A Claude Desktop extension (`.mcpb`) that keeps the official Claude as your main model while letting you call third-party models — DeepSeek, GLM, GPT, Gemini and others — through a **local OpenAI-compatible gateway** (default: [Magpie](https://github.com/yetone/magpie) at `http://127.0.0.1:3425/v1`). It feels like adding a few extra "model slots" to Claude, and it is designed to save Claude tokens.
 
@@ -56,6 +56,7 @@ Tools: `magpie_chat`, `magpie_ask`, `magpie_compare`, `magpie_recall`, `magpie_c
 
 ## Known limits
 
+- The extension's runtime messages and the companion skill are written in Simplified Chinese; Claude will still answer you in your own language.
 - Claude Desktop's model picker can't list third-party models, and the input box can't autocomplete `@`. This extension works through tools + a skill instead.
 - Answers can't stream into the chat.
 - Desktop only (needs the local gateway on the same machine).
@@ -74,7 +75,7 @@ mcpb pack . magpie-chat.mcpb
 
 ## Build your own with Claude
 
-[`docs/PROMPT.zh-CN.md`](docs/PROMPT.zh-CN.md) is a prompt (in Chinese) you can give to your own Claude to build an equivalent extension from scratch, including the pitfalls we hit.
+A prompt you can give to your own Claude to build an equivalent extension from scratch, including the pitfalls we hit: [English](docs/PROMPT.en.md) · [简体中文](docs/PROMPT.zh-CN.md) · [繁體中文](docs/PROMPT.zh-TW.md) · [日本語](docs/PROMPT.ja.md) · [한국어](docs/PROMPT.ko.md) · [Español](docs/PROMPT.es.md) · [Français](docs/PROMPT.fr.md) · [Deutsch](docs/PROMPT.de.md) · [Português (Brasil)](docs/PROMPT.pt-BR.md) · [Русский](docs/PROMPT.ru.md)
 
 ## License
 

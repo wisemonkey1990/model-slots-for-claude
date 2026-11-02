@@ -1,3 +1,5 @@
+[English](PROMPT.en.md) | [简体中文](PROMPT.zh-CN.md) | [繁體中文](PROMPT.zh-TW.md) | [日本語](PROMPT.ja.md) | [한국어](PROMPT.ko.md) | [Español](PROMPT.es.md) | [Français](PROMPT.fr.md) | [Deutsch](PROMPT.de.md) | [Português (Brasil)](PROMPT.pt-BR.md) | [Русский](PROMPT.ru.md)
+
 请帮我做一个 Claude 桌面版扩展（.mcpb），让我在 Claude 桌面版里继续用官方 Claude 作为主模型，同时能调用本机 AI 网关上的第三方模型（DeepSeek、GLM、GPT、Gemini 等），用起来像多了几个“模型槽位”，并且尽量节省 Claude 的 token。
 
 ## 开始前先确认

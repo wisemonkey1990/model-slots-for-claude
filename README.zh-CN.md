@@ -1,6 +1,6 @@
 # Model Slots for Claude
 
-[English](README.md)
+[English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [Русский](README.ru.md)
 
 一个 Claude 桌面版扩展（`.mcpb`）：主模型仍然是官方 Claude，同时可以通过**本机 OpenAI 兼容网关**（默认是 [Magpie](https://github.com/yetone/magpie)，地址 `http://127.0.0.1:3425/v1`）调用 DeepSeek、GLM、GPT、Gemini 等第三方模型。用起来像给 Claude 多加了几个"模型槽位"，并且尽量节省 Claude 的 token。
 
@@ -62,6 +62,7 @@
 
 ## 已知限制
 
+- 扩展的运行提示和配套技能用简体中文写成；Claude 仍会用你自己的语言回复你。
 - Claude 桌面版的模型选择器加不了第三方模型，输入框也做不了 `@` 自动补全，所以这个扩展通过工具和技能来实现。
 - 回答没法逐字流式显示在聊天里。
 - 只能在桌面版用，网关必须在同一台电脑上。
@@ -80,7 +81,7 @@ mcpb pack . magpie-chat.mcpb
 
 ## 让你的 Claude 自己做一个
 
-[`docs/PROMPT.zh-CN.md`](docs/PROMPT.zh-CN.md) 是一段提示词，发给你自己的 Claude，就能从零做出同样功能的扩展，我们踩过的坑也都写在里面了。
+一段提示词，发给你自己的 Claude，就能从零做出同样功能的扩展，我们踩过的坑也都写在里面了：[English](docs/PROMPT.en.md) · [简体中文](docs/PROMPT.zh-CN.md) · [繁體中文](docs/PROMPT.zh-TW.md) · [日本語](docs/PROMPT.ja.md) · [한국어](docs/PROMPT.ko.md) · [Español](docs/PROMPT.es.md) · [Français](docs/PROMPT.fr.md) · [Deutsch](docs/PROMPT.de.md) · [Português (Brasil)](docs/PROMPT.pt-BR.md) · [Русский](docs/PROMPT.ru.md)
 
 ## 许可证
 
