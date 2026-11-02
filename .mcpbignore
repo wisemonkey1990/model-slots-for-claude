@@ -7,3 +7,4 @@ skill/
 .gitignore
 .mcpbignore
 *.mcpb
+dist/

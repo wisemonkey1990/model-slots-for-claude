@@ -29,7 +29,7 @@
 
 ## 安装
 
-1. 从 [Releases](../../releases) 下载 `magpie-chat-<版本>.mcpb`。
+1. 从 [`dist/`](dist/) 文件夹下载最新的 `magpie-chat-<版本>.mcpb`（点开文件后点 **Download raw file**），如果 [Releases](../../releases) 里有也可以从那里下载。
 2. 双击安装，或者拖进 Claude 桌面版的"设置 → 扩展"。
 3. 检查设置项：默认模型、各任务的模型、别名（如 `ds=auto/deepseek-v4.1-flash, gpt=auto/gpt-6.1-sol`），以及文件模式**允许读写的文件夹**。默认的模型 ID 按 Magpie 的命名写的，请改成你的网关里实际有的 ID。
 4. 从系统托盘完全退出 Claude，再重新打开。

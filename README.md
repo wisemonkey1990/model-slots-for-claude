@@ -29,7 +29,7 @@ Tools: `magpie_chat`, `magpie_ask`, `magpie_compare`, `magpie_recall`, `magpie_c
 
 ## Install
 
-1. Download `magpie-chat-<version>.mcpb` from [Releases](../../releases).
+1. Download the latest `magpie-chat-<version>.mcpb` from the [`dist/`](dist/) folder (click the file, then **Download raw file**), or from [Releases](../../releases) if available.
 2. Double-click it (or drag it into Claude Desktop → Settings → Extensions).
 3. Review the settings: default model, per-task models, aliases (e.g. `ds=auto/deepseek-v4.1-flash, gpt=auto/gpt-6.1-sol`), and **allowed folders** for file mode. The default model IDs follow Magpie's naming — change them to IDs your gateway lists.
 4. Fully quit Claude from the system tray and reopen it.
