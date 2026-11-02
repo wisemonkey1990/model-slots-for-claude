@@ -1,0 +1,213 @@
+{
+  "manifest_version": "0.3",
+  "name": "magpie-chat",
+  "display_name": "Model Slots for Claude (Magpie Chat)",
+  "version": "1.6.0",
+  "description": "在 Claude 桌面版里调用本机 OpenAI 兼容网关（默认 Magpie）上的第三方模型：@别名模型槽位、按任务路由、多模型对比、文件模式省 token；核心代码支持热更新。Unofficial; not affiliated with Anthropic.",
+  "long_description": "让 Claude 在对话中通过本机 Magpie 网关（默认 http://127.0.0.1:3425/v1）调用你在 Magpie 里配置的其他模型。主对话仍使用 Claude 官方模型；通过本扩展调用的模型由 Magpie 中配置的供应商计费。\n\n功能：@别名模型槽位（多轮对话、会话存盘、重启可续）；按任务类型路由并自动切换备用模型、暂时跳过刚失败的供应商；多模型并行对比；文件模式（直接读写本地文件、长文档分块、失败续做）；取回之前的回答；在对话里直接改配置；调用日志与用量统计。\n\n热更新：核心代码保存在“文档\\Magpie Chat\\core\\core.mjs”，文件更新后下一次调用自动生效，不用重装扩展、不用重启 Claude；新代码出错时自动沿用上一个可用版本。注意：能写入这个文件夹的程序都能借本扩展运行代码，请不要共享该文件夹。\n\n自测：在扩展目录运行 node tests/selftest.mjs。使用前请确保 Magpie 正在运行。",
+  "author": {
+    "name": "wisemonkey1990",
+    "url": "https://github.com/wisemonkey1990"
+  },
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.mjs",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.mjs",
+        "${user_config.allowed_dirs}"
+      ],
+      "env": {
+        "MAGPIE_DEFAULT_MODEL": "${user_config.default_model}",
+        "MAGPIE_BASE_URL": "${user_config.base_url}",
+        "MAGPIE_API_KEY": "${user_config.api_key}",
+        "MAGPIE_TIMEOUT_SECONDS": "${user_config.timeout_seconds}",
+        "MAGPIE_MODEL_CODE": "${user_config.model_code}",
+        "MAGPIE_MODEL_REASONING": "${user_config.model_reasoning}",
+        "MAGPIE_MODEL_WRITING": "${user_config.model_writing}",
+        "MAGPIE_MODEL_TRANSLATE": "${user_config.model_translate}",
+        "MAGPIE_MODEL_QUICK": "${user_config.model_quick}",
+        "MAGPIE_ALIASES": "${user_config.aliases}",
+        "MAGPIE_CHAT_DISPLAY": "${user_config.chat_display}",
+        "MAGPIE_CHAT_FILE_THRESHOLD": "${user_config.chat_file_threshold}",
+        "MAGPIE_CHAT_DIR": "${user_config.chat_dir}",
+        "MAGPIE_CHAT_OPEN_FILES": "${user_config.chat_open_files}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "magpie_chat",
+      "description": "@别名模型槽位：和指定模型多轮对话"
+    },
+    {
+      "name": "magpie_ask",
+      "description": "按任务类型路由，向其他模型发送单轮请求，支持文件模式"
+    },
+    {
+      "name": "magpie_compare",
+      "description": "把同一个问题并行发给多个模型对比"
+    },
+    {
+      "name": "magpie_recall",
+      "description": "取回之前某次回答的全文"
+    },
+    {
+      "name": "magpie_config",
+      "description": "在对话里查看和修改配置，立即生效"
+    },
+    {
+      "name": "magpie_list_models",
+      "description": "列出 Magpie 网关提供的模型"
+    },
+    {
+      "name": "magpie_status",
+      "description": "查看版本、路由、会话、用量和文件夹设置"
+    }
+  ],
+  "user_config": {
+    "default_model": {
+      "type": "string",
+      "title": "通用模型",
+      "description": "没有更具体的类型时使用；其他栏留空时也回落到这里。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/deepseek-v4.1-flash"
+    },
+    "model_code": {
+      "type": "string",
+      "title": "编程模型",
+      "description": "写代码、调试、解释报错。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/gpt-6.1-sol"
+    },
+    "model_reasoning": {
+      "type": "string",
+      "title": "推理/审阅模型",
+      "description": "推理、分析、审阅、挑错、给第二意见。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/gpt-6.1-sol"
+    },
+    "model_writing": {
+      "type": "string",
+      "title": "写作模型",
+      "description": "写作、润色、改写、摘要。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/deepseek-v4.1-flash"
+    },
+    "model_translate": {
+      "type": "string",
+      "title": "翻译模型",
+      "description": "中英日等语言互译。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/glm-5.3-flash"
+    },
+    "model_quick": {
+      "type": "string",
+      "title": "快速模型",
+      "description": "简单的小问题，追求快和便宜。 可用英文逗号写多个模型，前一个失败自动换下一个。运行 magpie models 查看模型名。",
+      "required": false,
+      "default": "auto/glm-5.3-flash"
+    },
+    "aliases": {
+      "type": "string",
+      "title": "模型别名（@槽位）",
+      "description": "在聊天里用 @别名 直接和这个模型对话。格式：别名=模型ID，多个用英文逗号分隔；同一别名的备用模型用 | 分隔。例如 ds=auto/deepseek-v4.1-flash, gpt=auto/gpt-6.1-sol|codex/gpt-6.1-sol",
+      "required": false,
+      "default": "ds=auto/deepseek-v4.1-flash, gpt=auto/gpt-6.1-sol, glm=auto/glm-5.3-flash"
+    },
+    "chat_display": {
+      "type": "string",
+      "title": "@别名回答的显示方式",
+      "description": "auto：短回答在聊天里显示，长回答写入文件并打开（推荐）；relay：总是在聊天里显示；card：只放在工具结果里，Claude 只回一句话（最省）；file：总是写入文件并打开。",
+      "required": false,
+      "default": "auto"
+    },
+    "chat_file_threshold": {
+      "type": "number",
+      "title": "写入文件的长度门槛（字）",
+      "description": "显示方式为 auto 时，回答超过这么多字就写入文件，不在聊天里显示。",
+      "required": false,
+      "default": 1500,
+      "min": 200,
+      "max": 20000
+    },
+    "chat_dir": {
+      "type": "string",
+      "title": "Magpie Chat 数据文件夹",
+      "description": "长回答文件、热更新的核心代码（core 子文件夹）、会话和日志（.state 子文件夹）都放在这里。留空则用 文档\\Magpie Chat。",
+      "required": false,
+      "default": ""
+    },
+    "chat_open_files": {
+      "type": "boolean",
+      "title": "写入后自动打开文件",
+      "description": "长回答写入文件后，用系统默认程序打开。",
+      "required": false,
+      "default": true
+    },
+    "allowed_dirs": {
+      "type": "directory",
+      "title": "允许读写的文件夹",
+      "description": "文件模式下，扩展只能读取和写入这些文件夹里的文件。只添加需要交给其他模型处理的文件夹；里面的内容可能会被发送给 Magpie 背后的第三方供应商。",
+      "multiple": true,
+      "required": false,
+      "default": [
+        "${DOCUMENTS}",
+        "${DESKTOP}",
+        "${DOWNLOADS}"
+      ]
+    },
+    "base_url": {
+      "type": "string",
+      "title": "网关地址",
+      "description": "Magpie 的 OpenAI 兼容接口地址，一般不用改。",
+      "required": false,
+      "default": "http://127.0.0.1:3425/v1"
+    },
+    "api_key": {
+      "type": "string",
+      "title": "网关密钥",
+      "description": "本机访问时任何值都可以，保持默认 magpie 即可；只有连接开启了局域网共享的远程 Magpie 时才需要填 Gateway Key。",
+      "required": false,
+      "sensitive": true,
+      "default": "magpie"
+    },
+    "timeout_seconds": {
+      "type": "number",
+      "title": "超时（秒）",
+      "description": "单次请求最长等待时间。思考型模型回答较慢，可以调大。",
+      "required": false,
+      "default": 300,
+      "min": 10,
+      "max": 1800
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "win32",
+      "darwin",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": [
+    "magpie",
+    "gateway",
+    "llm",
+    "router",
+    "deepseek",
+    "glm",
+    "second-opinion"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemonkey1990/model-slots-for-claude"
+  },
+  "homepage": "https://github.com/wisemonkey1990/model-slots-for-claude",
+  "support": "https://github.com/wisemonkey1990/model-slots-for-claude/issues"
+}
